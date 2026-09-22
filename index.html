@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DC ThumbCraft Pro - मोफत YouTube थंबनेल मेकर</title>
+  
+  <meta name="description" content="DC ThumbCraft Pro - मोबाईलवरून मोफत YouTube आणि Shorts थंबनेल बनवा. 100% Free Marathi & English Thumbnail Maker.">
+  <meta name="keywords" content="DC ThumbCraft, YouTube Thumbnail Maker Marathi, Free Thumbnail Generator, Shorts Thumbnail">
+  <meta name="author" content="Dnyaneshwar Deokar">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="DC ThumbCraft Pro - मोफत थंबनेल मेकर">
+  <meta property="og:description" content="फक्त २ मिनिटांत व्हायरल YouTube & Shorts थंबनेल बनवा. 100% मोफत!">
+  <meta property="og:type" content="website">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Poppins:wght@600;800;900&family=Teko:wght@700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' },
+            gold: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+            darkbg: '#0f172a',
+            darkcard: '#1e293b',
+            darkborder: '#334155'
+          },
+          fontFamily: {
+            marathi: ['Hind', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+            impact: ['Teko', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Poppins', 'Hind', sans-serif;
+      background-color: #0b0f19;
+      color: #f1f5f9;
+      user-select: none;
+    }
+    canvas {
+      image-rendering: auto;
+      touch-action: none;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #111827;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #374151;
+      border-radius: 4px;
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between custom-scroll">
+
+  <header class="bg-[#111827]/90 backdrop-blur-md border-b border-darkborder sticky top-0 z-40 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-2">
+      <div class="flex items-center gap-3">
+        <div id="secretOwnerLogo" onclick="handleSecretAdminClick()" title="DC ThumbCraft" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-amber-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-white font-black text-xl tracking-tighter cursor-pointer active:scale-95 select-none transition-transform">
+          DC
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-lg font-black tracking-tight text-white flex items-center gap-1">
+              <span class="gold-gradient">DC</span> ThumbCraft <span class="text-xs px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 uppercase tracking-widest font-semibold">Pro</span>
+            </h1>
+          </div>
+          <p class="text-[11px] text-gray-400">व्हायरल YouTube & Shorts थंबनेल क्रिएटर</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="downloadThumbnail()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/30 transition-all active:scale-95">
+          <i class="fa-solid fa-download"></i>
+          <span>थंबनेल डाऊनलोड करा</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="adminPanelDrawer" class="hidden bg-[#131b2e] border-b border-amber-500/40 px-4 py-4 shadow-2xl transition-all">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-bold text-amber-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-shield"></i> अधिकृत मालक ॲडमिन (Dnyaneshwar Deokar)
+          </span>
+        </div>
+        <button onclick="lockAdminPanel()" class="text-xs text-rose-300 hover:text-white px-3 py-1 rounded bg-rose-950/60 border border-rose-500/40 flex items-center gap-1">
+          <i class="fa-solid fa-lock text-[10px]"></i> पॅनेल बंद करा
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+        <div>
+          <label class="font-semibold text-gray-300 block mb-1">तुमचा खरा UPI ID:</label>
+          <input type="text" id="ownerUpiInput" value="dnyaneshwardeokar@ybl" class="w-full bg-darkbg border border-darkborder px-3 py-2 rounded-lg text-emerald-400 font-mono focus:outline-none focus:border-emerald-500">
+        </div>
+        <div>
+          <label class="font-semibold text-gray-300 block mb-1">तुमचा WhatsApp नंबर:</label>
+          <input type="text" id="ownerWhatsappInput" value="919405478111" class="w-full bg-darkbg border border-darkborder px-3 py-2 rounded-lg text-emerald-400 font-mono focus:outline-none focus:border-emerald-500">
+        </div>
+      </div>
+
+      <div class="mt-3 flex items-center justify-between flex-wrap gap-2">
+        <p class="text-[11px] text-gray-400">माहिती कायमस्वरूपी सेव्ह आहे. गरज असल्यास बदलून सेव्ह करा.</p>
+        <button onclick="saveOwnerPaymentDetails()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold rounded-lg text-xs shadow-lg transition-all active:scale-95 flex items-center gap-1.5">
+          <i class="fa-solid fa-floppy-disk"></i> माहिती सेव्ह करा
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main class="max-w-7xl mx-auto w-full p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
+    <div class="lg:col-span-5 flex flex-col gap-4">
+      <div class="bg-darkcard border border-darkborder rounded-2xl p-3.5 shadow-lg">
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> 1-क्लिक व्हायरल टेम्पलेट्स
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button onclick="applyPreset('earning')" class="p-2 rounded-xl bg-gradient-to-br from-emerald-950 to-slate-900 border border-emerald-500/30 text-left hover:border-emerald-400 transition-all">
+            <span class="text-lg">💰</span>
+            <p class="text-xs font-bold text-white mt-1">पैसे कमवा</p>
+            <p class="text-[10px] text-emerald-400">Earning Pro</p>
+          </button>
+          <button onclick="applyPreset('tech')" class="p-2 rounded-xl bg-gradient-to-br from-indigo-950 to-slate-900 border border-indigo-500/30 text-left hover:border-indigo-400 transition-all">
+            <span class="text-lg">🤖</span>
+            <p class="text-xs font-bold text-white mt-1">AI / Tech</p>
+            <p class="text-[10px] text-indigo-400">Sci-Fi</p>
+          </button>
+          <button onclick="applyPreset('breaking')" class="p-2 rounded-xl bg-gradient-to-br from-rose-950 to-slate-900 border border-rose-500/30 text-left hover:border-rose-400 transition-all">
+            <span class="text-lg">🚨</span>
+            <p class="text-xs font-bold text-white mt-1">मोठी बातमी</p>
+            <p class="text-[10px] text-rose-400">Breaking</p>
+          </button>
+          <button onclick="applyPreset('gaming')" class="p-2 rounded-xl bg-gradient-to-br from-purple-950 to-slate-900 border border-purple-500/30 text-left hover:border-purple-400 transition-all">
+            <span class="text-lg">🎮</span>
+            <p class="text-xs font-bold text-white mt-1">गेमिंग</p>
+            <p class="text-[10px] text-purple-400">Gaming</p>
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-darkcard border border-darkborder rounded-2xl p-3.5 shadow-lg flex flex-col gap-3">
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center justify-between">
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-heading text-indigo-400"></i> थंबनेल मजकूर</span>
+          <span class="text-[10px] text-gray-400 font-normal">कॅनव्हासवर ड्रॅग करा</span>
+        </h2>
+
+        <div>
+          <label class="text-[11px] text-gray-300 font-medium block mb-1">मुख्य ठळक शीर्षक:</label>
+          <input type="text" id="primaryTextInput" value="मोबाईलवरून दररोज ₹२,००० कमवा!" class="w-full bg-darkbg border border-darkborder rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="text-[11px] text-gray-300 font-medium block mb-1">उपशीर्षक / बॅज मजकूर:</label>
+          <input type="text" id="secondaryTextInput" value="100% मोफत ट्रिक | आजच सुरू करा 🔥" class="w-full bg-darkbg border border-darkborder rounded-lg px-3 py-2 text-sm text-amber-300 focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <span class="text-[10px] text-gray-400 block mb-1">रेडीमेड मराठी वाक्ये:</span>
+          <div class="flex flex-wrap gap-1.5">
+            <button onclick="addMarathiText('मोफत शिका')" class="text-[10px] px-2 py-0.5 rounded bg-darkbg border border-darkborder text-gray-300 hover:border-indigo-400">मोफत शिका</button>
+            <button onclick="addMarathiText('दरमहा ₹५०,००० कमाई')" class="text-[10px] px-2 py-0.5 rounded bg-darkbg border border-darkborder text-gray-300 hover:border-indigo-400">दरमहा ₹५०,००० कमाई</button>
+            <button onclick="addMarathiText('नवीन भन्नाट अपडेट!')" class="text-[10px] px-2 py-0.5 rounded bg-darkbg border border-darkborder text-gray-300 hover:border-indigo-400">नवीन भन्नाट अपडेट!</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+          <div>
+            <label class="text-[11px] text-gray-300 block mb-1">फॉन्ट स्टाईल:</label>
+            <select id="fontFamilySelect" class="w-full bg-darkbg border border-darkborder rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none">
+              <option value="'Hind', sans-serif">Hind (मराठी)</option>
+              <option value="'Poppins', sans-serif">Poppins</option>
+              <option value="'Teko', sans-serif">Teko Bold</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-[11px] text-gray-300 block mb-1">साईज: <span id="fontSizeDisplay" class="text-amber-400 font-bold">54px</span></label>
+            <input type="range" id="fontSizeSlider" min="28" max="90" value="54" class="w-full accent-indigo-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="flex items-center justify-between p-2 rounded-lg bg-darkbg border border-darkborder">
+            <span class="text-[11px] text-gray-300">शीर्षक रंग:</span>
+            <input type="color" id="primaryColorInput" value="#ffffff" class="w-7 h-7 rounded border-0 bg-transparent cursor-pointer">
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-darkbg border border-darkborder">
+            <span class="text-[11px] text-gray-300">उपशीर्षक रंग:</span>
+            <input type="color" id="secondaryColorInput" value="#facc15" class="w-7 h-7 rounded border-0 bg-transparent cursor-pointer">
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-darkcard border border-darkborder rounded-2xl p-3.5 shadow-lg flex flex-col gap-3">
+        <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center justify-between">
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-shapes text-emerald-400"></i> स्टिकर्स आणि बॅजेस</span>
+        </h2>
+
+        <div class="flex flex-wrap gap-1.5">
+          <button onclick="addBadge('100% FREE', '#10b981')" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-bold">100% FREE</button>
+          <button onclick="addBadge('₹ 1,00,000', '#f59e0b')" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 text-xs font-bold">₹ 1,00,000</button>
+          <button onclick="addBadge('LIVE 🔴', '#ef4444')" class="px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 border border-rose-500/40 text-xs font-bold">LIVE 🔴</button>
+        </div>
+
+        <div class="flex flex-wrap gap-2 text-xl bg-darkbg p-2 rounded-xl border border-darkborder">
+          <button onclick="addEmoji('🔥')" class="hover:scale-125 transition-transform">🔥</button>
+          <button onclick="addEmoji('🤑')" class="hover:scale-125 transition-transform">🤑</button>
+          <button onclick="addEmoji('😱')" class="hover:scale-125 transition-transform">😱</button>
+          <button onclick="addEmoji('🚀')" class="hover:scale-125 transition-transform">🚀</button>
+          <button onclick="addEmoji('💥')" class="hover:scale-125 transition-transform">💥</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <label class="p-2.5 rounded-xl bg-darkbg border border-dashed border-darkborder hover:border-indigo-400 flex flex-col items-center justify-center cursor-pointer transition-all">
+            <i class="fa-solid fa-user-plus text-indigo-400 mb-1"></i>
+            <span class="text-gray-300 font-medium">स्वतःचा फोटो</span>
+            <input type="file" id="userPhotoInput" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'photo')">
+          </label>
+          <label class="p-2.5 rounded-xl bg-darkbg border border-dashed border-darkborder hover:border-amber-400 flex flex-col items-center justify-center cursor-pointer transition-all">
+            <i class="fa-solid fa-image text-amber-400 mb-1"></i>
+            <span class="text-gray-300 font-medium">बॅकग्राउंड फोटो</span>
+            <input type="file" id="bgPhotoInput" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'bg')">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-7 flex flex-col gap-4">
+      <div class="bg-darkcard border border-darkborder rounded-2xl p-4 shadow-xl flex flex-col gap-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <button id="ratio169" class="px-2.5 py-1 rounded bg-indigo-600 text-white text-xs font-semibold">16:9 YouTube</button>
+            <button id="ratio916" class="px-2.5 py-1 rounded bg-darkbg text-gray-400 hover:text-white border border-darkborder text-xs font-semibold">9:16 Shorts</button>
+          </div>
+          <span class="text-gray-400 text-[11px]">1280 × 720 HD</span>
+        </div>
+
+        <div class="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-slate-700/80 flex items-center justify-center">
+          <canvas id="thumbnailCanvas" width="1280" height="720" class="w-full h-full object-contain cursor-crosshair"></canvas>
+        </div>
+
+        <div class="flex items-center justify-between flex-wrap gap-2 pt-1">
+          <div class="flex items-center gap-2">
+            <button onclick="clearCanvasElements()" class="px-3 py-2 rounded-lg bg-darkbg hover:bg-slate-700 text-gray-300 text-xs font-medium border border-darkborder">
+              <i class="fa-solid fa-rotate-left mr-1"></i> रिसेट
+            </button>
+            <button onclick="addLightningEffect()" class="px-3 py-2 rounded-lg bg-darkbg hover:bg-slate-700 text-amber-300 text-xs font-medium border border-darkborder">
+              <i class="fa-solid fa-bolt mr-1"></i> लाईट इफेक्ट
+            </button>
+          </div>
+
+          <button onclick="downloadThumbnail()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm shadow-lg shadow-emerald-500/30 transition-all active:scale-95 flex items-center gap-2">
+            <i class="fa-solid fa-download text-base"></i>
+            <span>HD थंबनेल डाऊनलोड करा</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-indigo-950/60 via-darkcard to-slate-900 border border-indigo-500/30 rounded-2xl p-4 shadow-xl">
+        <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+              <i class="fa-solid fa-indian-rupee-sign text-sm"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                थेट बँक खात्यात पैसे पाठवा / मिळवा
+              </h3>
+              <p class="text-[11px] text-gray-400">Dnyaneshwar Deokar अधिकृत खात्यात थेट व्यवहार</p>
+            </div>
+          </div>
+          <span class="text-[10px] bg-amber-500/10 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">
+            0% कमिशन | थेट बँक जमा
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center bg-darkbg/80 p-3 rounded-xl border border-darkborder">
+          <div class="flex items-center gap-3">
+            <div class="w-20 h-20 bg-white p-1 rounded-lg shrink-0 flex items-center justify-center shadow-md">
+              <img id="displayQrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=dnyaneshwardeokar@ybl&pn=Dnyaneshwar%20Deokar" alt="UPI QR Code" class="w-full h-full object-contain">
+            </div>
+            <div>
+              <p class="text-[10px] text-gray-400">स्कॅन करून थेट पैसे पाठवा:</p>
+              <p id="displayUpiId" class="text-xs font-mono font-bold text-emerald-400 truncate max-w-[180px]">dnyaneshwardeokar@ybl</p>
+              <p class="text-[10px] text-gray-400 mt-1">GPay / PhonePe / Paytm / BHIM</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <a id="displayWhatsappBtn" href="https://api.whatsapp.com/send?phone=919405478111&text=Hello%20Dnyaneshwar%20ji!%20Mala%20DC%20ThumbCraft%20varun%20thumbnail%20banvun%20pahije." target="_blank" class="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all">
+              <i class="fa-brands fa-whatsapp text-lg"></i>
+              <span>थेट WhatsApp वर थंबनेल ऑर्डर द्या</span>
+            </a>
+            <p class="text-[10px] text-center text-gray-400">मोबाईल: 9405478111 वर थेट संपर्क</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="pinModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-darkcard border border-amber-500/40 rounded-2xl p-5 max-w-sm w-full shadow-2xl">
+      <div class="text-center mb-4">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto mb-2 text-xl">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">गुप्त ॲडमिन व्हेरिफिकेशन</h3>
+        <p class="text-xs text-gray-400 mt-1">फक्त Dnyaneshwar Deokar साठी</p>
+      </div>
+
+      <input type="password" id="inputAdminPin" maxlength="6" placeholder="गुप्त पिन टाका" class="w-full text-center tracking-widest text-xl font-mono bg-darkbg border border-darkborder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400 mb-4">
+
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closePinModal()" class="py-2 rounded-xl bg-darkbg border border-darkborder text-xs text-gray-300">रद्द करा</button>
+        <button onclick="verifyAdminPin()" class="py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs">अनलॉक करा</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 border border-emerald-500/50 text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium transform transition-all duration-300 translate-y-16 opacity-0 pointer-events-none flex items-center gap-2">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">अपडेट सेव्ह झाले!</span>
+  </div>
+
+  <script>
+    const MASTER_CONFIG = {
+      upiId: 'dnyaneshwardeokar@ybl',
+      whatsappNumber: '919405478111',
+      adminPin: '261126'
+    };
+
+    const state = {
+      width: 1280,
+      height: 720,
+      aspectRatio: '16:9',
+      bgColor1: '#090d16',
+      bgColor2: '#1e1b4b',
+      vignette: true,
+      lightFlare: true,
+      textPrimary: 'मोबाईलवरून दररोज ₹२,००० कमवा!',
+      textSecondary: '100% मोफत ट्रिक | आजच सुरू करा 🔥',
+      fontFamily: "'Hind', sans-serif",
+      primaryColor: '#ffffff',
+      secondaryColor: '#facc15',
+      fontSize: 54,
+      hasStroke: true,
+      hasShadow: true,
+      hasGlow: true,
+      hasBadgeBg: true,
+      userImage: null,
+      bgImage: null,
+      layers: [
+        { id: 'primaryText', type: 'text', text: 'मोबाईलवरून दररोज ₹२,००० कमवा!', x: 640, y: 380, isDragging: false },
+        { id: 'secondaryText', type: 'subtext', text: '100% मोफत ट्रिक | आजच सुरू करा 🔥', x: 640, y: 490, isDragging: false },
+        { id: 'badge_1', type: 'badge', text: '₹ 1,00,000', color: '#f59e0b', x: 180, y: 140, size: 28, isDragging: false },
+        { id: 'emoji_1', type: 'emoji', char: '🔥', x: 1080, y: 220, size: 130, isDragging: false }
+      ]
+    };
+
+    let secretClickCount = 0;
+    let secretClickTimer = null;
+
+    function handleSecretAdminClick() {
+      secretClickCount++;
+      clearTimeout(secretClickTimer);
+      if (secretClickCount >= 4) {
+        secretClickCount = 0;
+        openPinModal();
+      } else {
+        secretClickTimer = setTimeout(() => {
+          secretClickCount = 0;
+        }, 1500);
+      }
+    }
+
+    const canvas = document.getElementById('thumbnailCanvas');
+    const ctx = canvas.getContext('2d');
+    const primaryTextInput = document.getElementById('primaryTextInput');
+    const secondaryTextInput = document.getElementById('secondaryTextInput');
+    const fontFamilySelect = document.getElementById('fontFamilySelect');
+    const fontSizeSlider = document.getElementById('fontSizeSlider');
+    const fontSizeDisplay = document.getElementById('fontSizeDisplay');
+    const primaryColorInput = document.getElementById('primaryColorInput');
+    const secondaryColorInput = document.getElementById('secondaryColorInput');
+
+    function renderCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (state.bgImage) {
+        ctx.drawImage(state.bgImage, 0, 0, canvas.width, canvas.height);
+      } else {
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grad.addColorStop(0, state.bgColor1);
+        grad.addColorStop(1, state.bgColor2);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      if (state.lightFlare) {
+        const radGrad = ctx.createRadialGradient(canvas.width * 0.8, canvas.height * 0.2, 20, canvas.width * 0.8, canvas.height * 0.2, 500);
+        radGrad.addColorStop(0, 'rgba(99, 102, 241, 0.45)');
+        radGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = radGrad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      if (state.userImage) {
+        const aspect = state.userImage.width / state.userImage.height;
+        const targetHeight = canvas.height * 0.85;
+        const targetWidth = targetHeight * aspect;
+        ctx.drawImage(state.userImage, canvas.width - targetWidth - 20, canvas.height - targetHeight, targetWidth, targetHeight);
+      }
+
+      state.layers.forEach(layer => {
+        if (layer.type === 'badge') {
+          drawBadgeOnCanvas(layer);
+        } else if (layer.type === 'emoji') {
+          ctx.save();
+          ctx.font = `${layer.size}px sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(layer.char, layer.x, layer.y);
+          ctx.restore();
+        }
+      });
+
+      const primaryLayer = state.layers.find(l => l.id === 'primaryText');
+      if (primaryLayer && primaryLayer.text) {
+        drawStyledText(primaryLayer.text, primaryLayer.x, primaryLayer.y, state.fontSize, state.primaryColor, true);
+      }
+
+      const secondaryLayer = state.layers.find(l => l.id === 'secondaryText');
+      if (secondaryLayer && secondaryLayer.text) {
+        drawStyledText(secondaryLayer.text, secondaryLayer.x, secondaryLayer.y, Math.round(state.fontSize * 0.65), state.secondaryColor, false);
+      }
+    }
+
+    function drawStyledText(text, x, y, size, color, isPrimary) {
+      ctx.save();
+      ctx.font = `bold ${size}px ${state.fontFamily}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const metrics = ctx.measureText(text);
+      const textWidth = metrics.width;
+      const textHeight = size * 1.2;
+
+      if (state.hasBadgeBg && isPrimary) {
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.strokeStyle = 'rgba(99, 102, 241, 0.4)';
+        ctx.lineWidth = 3;
+        roundRect(ctx, x - (textWidth / 2) - 25, y - (textHeight / 2) - 8, textWidth + 50, textHeight + 16, 14, true, true);
+      }
+
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = Math.max(6, Math.round(size * 0.14));
+      ctx.strokeText(text, x, y);
+
+      ctx.fillStyle = color;
+      ctx.fillText(text, x, y);
+      ctx.restore();
+    }
+
+    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
+
+    function drawBadgeOnCanvas(badge) {
+      ctx.save();
+      ctx.font = `bold ${badge.size || 24}px 'Poppins', sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const metrics = ctx.measureText(badge.text);
+      const width = metrics.width + 36;
+      const height = (badge.size || 24) * 1.8;
+
+      ctx.fillStyle = badge.color || '#f59e0b';
+      roundRect(ctx, badge.x - width / 2, badge.y - height / 2, width, height, 10, true, false);
+
+      ctx.fillStyle = '#000000';
+      ctx.fillText(badge.text, badge.x, badge.y + 1);
+      ctx.restore();
+    }
+
+    let activeDragItem = null;
+    let dragStartX = 0;
+    let dragStartY = 0;
+
+    function getCanvasCoordinates(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: (clientX - rect.left) * scaleX,
+        y: (clientY - rect.top) * scaleY
+      };
+    }
+
+    function handleStart(e) {
+      const pos = getCanvasCoordinates(e);
+      for (let i = state.layers.length - 1; i >= 0; i--) {
+        const item = state.layers[i];
+        let hit = false;
+        if (item.type === 'text' || item.type === 'subtext') {
+          const width = 600;
+          const height = 100;
+          if (pos.x >= item.x - width / 2 && pos.x <= item.x + width / 2 &&
+              pos.y >= item.y - height / 2 && pos.y <= item.y + height / 2) {
+            hit = true;
+          }
+        } else if (item.type === 'badge' || item.type === 'emoji') {
+          const dist = Math.hypot(pos.x - item.x, pos.y - item.y);
+          if (dist < 80) hit = true;
+        }
+
+        if (hit) {
+          activeDragItem = item;
+          dragStartX = pos.x - item.x;
+          dragStartY = pos.y - item.y;
+          break;
+        }
+      }
+    }
+
+    function handleMove(e) {
+      if (!activeDragItem) return;
+      e.preventDefault();
+      const pos = getCanvasCoordinates(e);
+      activeDragItem.x = pos.x - dragStartX;
+      activeDragItem.y = pos.y - dragStartY;
+      renderCanvas();
+    }
+
+    function handleEnd() {
+      activeDragItem = null;
+    }
+
+    canvas.addEventListener('mousedown', handleStart);
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+
+    canvas.addEventListener('touchstart', handleStart, { passive: false });
+    window.addEventListener('touchmove', handleMove, { passive: false });
+    window.addEventListener('touchend', handleEnd);
+
+    primaryTextInput.addEventListener('input', (e) => {
+      state.textPrimary = e.target.value;
+      const l = state.layers.find(i => i.id === 'primaryText');
+      if (l) l.text = e.target.value;
+      renderCanvas();
+    });
+
+    secondaryTextInput.addEventListener('input', (e) => {
+      state.textSecondary = e.target.value;
+      const l = state.layers.find(i => i.id === 'secondaryText');
+      if (l) l.text = e.target.value;
+      renderCanvas();
+    });
+
+    fontFamilySelect.addEventListener('change', (e) => {
+      state.fontFamily = e.target.value;
+      renderCanvas();
+    });
+
+    fontSizeSlider.addEventListener('input', (e) => {
+      state.fontSize = parseInt(e.target.value);
+      fontSizeDisplay.textContent = `${state.fontSize}px`;
+      renderCanvas();
+    });
+
+    primaryColorInput.addEventListener('input', (e) => {
+      state.primaryColor = e.target.value;
+      renderCanvas();
+    });
+
+    secondaryColorInput.addEventListener('input', (e) => {
+      state.secondaryColor = e.target.value;
+      renderCanvas();
+    });
+
+    document.getElementById('ratio169').addEventListener('click', function() {
+      state.width = 1280;
+      state.height = 720;
+      canvas.width = 1280;
+      canvas.height = 720;
+      this.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white text-xs font-semibold';
+      document.getElementById('ratio916').className = 'px-2.5 py-1 rounded bg-darkbg text-gray-400 hover:text-white border border-darkborder text-xs font-semibold';
+      renderCanvas();
+    });
+
+    document.getElementById('ratio916').addEventListener('click', function() {
+      state.width = 720;
+      state.height = 1280;
+      canvas.width = 720;
+      canvas.height = 1280;
+      this.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white text-xs font-semibold';
+      document.getElementById('ratio169').className = 'px-2.5 py-1 rounded bg-darkbg text-gray-400 hover:text-white border border-darkborder text-xs font-semibold';
+      renderCanvas();
+    });
+
+    function applyPreset(name) {
+      if (name === 'earning') {
+        state.bgColor1 = '#064e3b';
+        state.bgColor2 = '#022c22';
+        state.textPrimary = 'दररोज ₹२,५०० थेट बँक खात्यात!';
+        state.textSecondary = '100% मोफत ॲप | पुरावा पाहा 🔥';
+        state.secondaryColor = '#34d399';
+      } else if (name === 'tech') {
+        state.bgColor1 = '#1e1b4b';
+        state.bgColor2 = '#0f172a';
+        state.textPrimary = 'AI ने बदलले जग! तुम्हीही शिका';
+        state.textSecondary = 'मोफत टूल्स आणि संपूर्ण गाईड 🤖';
+        state.secondaryColor = '#818cf8';
+      } else if (name === 'breaking') {
+        state.bgColor1 = '#881337';
+        state.bgColor2 = '#4c0519';
+        state.textPrimary = 'मोठी बातमी! आजच लागू नवीन नियम';
+        state.textSecondary = 'सर्वांसाठी अत्यंत महत्त्वाचे 🚨';
+        state.secondaryColor = '#facc15';
+      } else if (name === 'gaming') {
+        state.bgColor1 = '#3b0764';
+        state.bgColor2 = '#09090b';
+        state.textPrimary = 'असा गेमप्ले आधी कधीच पाहिला नाही!';
+        state.textSecondary = 'New High Score Record 🎮🔥';
+        state.secondaryColor = '#c084fc';
+      }
+
+      primaryTextInput.value = state.textPrimary;
+      secondaryTextInput.value = state.textSecondary;
+      const l1 = state.layers.find(i => i.id === 'primaryText');
+      if (l1) l1.text = state.textPrimary;
+      const l2 = state.layers.find(i => i.id === 'secondaryText');
+      if (l2) l2.text = state.textSecondary;
+      renderCanvas();
+      showToast("व्हायरल टेम्पलेट लागू केले!");
+    }
+
+    function addBadge(text, color) {
+      state.layers.push({
+        id: 'badge_' + Date.now(),
+        type: 'badge',
+        text: text,
+        color: color,
+        x: 200,
+        y: 150,
+        size: 28,
+        isDragging: false
+      });
+      renderCanvas();
+      showToast(`'${text}' बॅज जोडला!`);
+    }
+
+    function addEmoji(emoji) {
+      state.layers.push({
+        id: 'emoji_' + Date.now(),
+        type: 'emoji',
+        char: emoji,
+        x: 950,
+        y: 200,
+        size: 130,
+        isDragging: false
+      });
+      renderCanvas();
+      showToast(`'${emoji}' स्टिकर जोडला!`);
+    }
+
+    function addMarathiText(phrase) {
+      primaryTextInput.value = phrase;
+      state.textPrimary = phrase;
+      const l = state.layers.find(i => i.id === 'primaryText');
+      if (l) l.text = phrase;
+      renderCanvas();
+    }
+
+    function handleImageUpload(e, type) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          if (type === 'photo') {
+            state.userImage = img;
+          } else {
+            state.bgImage = img;
+          }
+          renderCanvas();
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearCanvasElements() {
+      state.bgImage = null;
+      state.userImage = null;
+      renderCanvas();
+      showToast("कॅनव्हास रिसेट केला!");
+    }
+
+    function addLightningEffect() {
+      state.lightFlare = !state.lightFlare;
+      renderCanvas();
+    }
+
+    function downloadThumbnail() {
+      const link = document.createElement('a');
+      link.download = `DC-Thumbnail-${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.click();
+      showToast("🎉 थंबनेल डाऊनलोड झाले!");
+    }
+
+    function openPinModal() {
+      document.getElementById('inputAdminPin').value = '';
+      document.getElementById('pinModal').classList.remove('hidden');
+    }
+
+    function closePinModal() {
+      document.getElementById('pinModal').classList.add('hidden');
+    }
+
+    function verifyAdminPin() {
+      const entered = document.getElementById('inputAdminPin').value.trim();
+      const currentPin = localStorage.getItem('dc_owner_pin') || MASTER_CONFIG.adminPin;
+
+      if (entered === currentPin) {
+        closePinModal();
+        document.getElementById('adminPanelDrawer').classList.remove('hidden');
+        showToast("🔓 ॲडमिन पॅनेल अनलॉक झाले!");
+      } else {
+        showToast("⚠️ चुकीचा गुप्त पिन!");
+      }
+    }
+
+    function lockAdminPanel() {
+      document.getElementById('adminPanelDrawer').classList.add('hidden');
+    }
+
+    function formatWhatsAppNumber(phone) {
+      let cleaned = phone.replace(/[^0-9]/g, '');
+      if (cleaned.length === 10) cleaned = '91' + cleaned;
+      return cleaned;
+    }
+
+    function saveOwnerPaymentDetails() {
+      const upi = document.getElementById('ownerUpiInput').value.trim();
+      const phone = document.getElementById('ownerWhatsappInput').value.trim();
+
+      if (upi) localStorage.setItem('dc_owner_upi', upi);
+      if (phone) localStorage.setItem('dc_owner_phone', formatWhatsAppNumber(phone));
+
+      applyActivePaymentConfig();
+      lockAdminPanel();
+      showToast("✅ माहिती सेव्ह झाली!");
+    }
+
+    function applyActivePaymentConfig() {
+      const activeUpi = localStorage.getItem('dc_owner_upi') || MASTER_CONFIG.upiId;
+      const activePhone = localStorage.getItem('dc_owner_phone') || MASTER_CONFIG.whatsappNumber;
+      const formattedPhone = formatWhatsAppNumber(activePhone);
+
+      document.getElementById('displayUpiId').textContent = activeUpi;
+      document.getElementById('ownerUpiInput').value = activeUpi;
+
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=${encodeURIComponent(activeUpi)}&pn=Dnyaneshwar%20Deokar`;
+      document.getElementById('displayQrCode').src = qrUrl;
+
+      document.getElementById('ownerWhatsappInput').value = formattedPhone;
+      const whatsappMsg = encodeURIComponent("Hello Dnyaneshwar ji! Mala DC ThumbCraft varun thumbnail banvun pahije.");
+      document.getElementById('displayWhatsappBtn').href = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${whatsappMsg}`;
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyActivePaymentConfig();
+      renderCanvas();
+    });
+  </script>
+</body>
+</html>
